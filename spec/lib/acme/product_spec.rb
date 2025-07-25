@@ -9,6 +9,6 @@ RSpec.describe Acme::Product do
 
     expect(product.code).to eq("R01")
     expect(product.name).to eq("Red Widget")
-    expect(product.price).to eq(32.95.to_d)
+    expect(product.price).to eq(BigDecimal("32.95"))
   end
 end

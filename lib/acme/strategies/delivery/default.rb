@@ -9,9 +9,9 @@ module Acme
         # @return [BigDecimal]
         def call(total)
           return 0.to_d if total >= 90.to_d
-          return 2.95.to_d if total >= 50.to_d
+          return BigDecimal("2.95") if total >= 50.to_d
 
-          4.95.to_d
+          BigDecimal("4.95")
         end
       end
     end

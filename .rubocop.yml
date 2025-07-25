@@ -1,22 +1,114 @@
 require:
   - rubocop-rspec
+  - rubocop-performance
 
 AllCops:
   NewCops: enable
   SuggestExtensions: false
   TargetRubyVersion: 3.1
-RSpec/ExampleLength:
-  Max: 10
+  Exclude:
+    - 'vendor/**/*'
+    - 'coverage/**/*'
+    - 'doc/**/*'
+
+# Layout & Formatting
 Layout/LineLength:
   Max: 100
-RSpec:
-  Language:
-    Include:
-      - spec/**/*_spec.rb
-RSpec/MultipleDescribes:
-  Enabled: false
-RSpec/MultipleExpectations:
-  Max: 20
+  AllowedPatterns: ['\A\s*#']
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+# Style Rules
 Style/StringLiterals:
   EnforcedStyle: double_quotes
   Enabled: true
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  EnforcedStyle: always
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19_no_mixed_keys
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: nested
+
+# Metrics
+Metrics/MethodLength:
+  Max: 15
+  CountAsOne: ['array', 'hash', 'heredoc']
+
+Metrics/ClassLength:
+  Max: 100
+
+Metrics/ModuleLength:
+  Max: 100
+
+Metrics/CyclomaticComplexity:
+  Max: 8
+
+Metrics/PerceivedComplexity:
+  Max: 8
+
+Metrics/AbcSize:
+  Max: 20
+
+# Naming
+Naming/PredicatePrefix:
+  ForbiddenPrefixes: ['is_', 'have_']
+  AllowedMethods: ['is_a?']
+
+# Security
+Security/Eval:
+  Enabled: true
+
+# Performance
+Performance/RedundantMerge:
+  Enabled: true
+
+Performance/StringReplacement:
+  Enabled: true
+
+# Lint
+Lint/SuppressedException:
+  AllowComments: true
+
+Lint/UnusedMethodArgument:
+  AllowUnusedKeywordArguments: true
+
+# RSpec Configuration
+RSpec/ExampleLength:
+  Max: 15
+
+RSpec/MultipleDescribes:
+  Enabled: false
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+RSpec/NestedGroups:
+  Max: 4
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/ImplicitExpect:
+  EnforcedStyle: should
+
+RSpec/DescribeClass:
+  Enabled: true
+  IgnoredMetadata:
+    type:
+      - feature
+      - request
+      - routing
