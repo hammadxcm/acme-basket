@@ -1,32 +1,64 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "acme/product"
-require "acme/product_catalog"
+require "bigdecimal"
+require "bigdecimal/util"
 require "acme/basket"
-require "acme/strategies/offer/red_widget_half_price"
-require "acme/strategies/delivery/default"
+require "acme/product"
 
 RSpec.describe Acme::Basket do
   subject(:basket) do
-    described_class.new(catalog: catalog, delivery_rule: delivery_rule, offers: offers)
+    described_class.new(
+      product_catalog: catalog,
+      delivery_strategy: delivery_strategy,
+      offer_strategies: [offer_strategy]
+    )
   end
 
-  let(:products) do
-    [
-      Acme::Product.new(code: "R01", name: "Red Widget", price: "32.95"),
-      Acme::Product.new(code: "G01", name: "Green Widget", price: "24.95"),
-      Acme::Product.new(code: "B01", name: "Blue Widget", price: "7.95")
-    ]
+  let(:r01) { Acme::Product.new(code: "R01", name: "Red Widget", price: BigDecimal("32.95")) }
+  let(:g01) { Acme::Product.new(code: "G01", name: "Green Widget", price: BigDecimal("24.95")) }
+  let(:b01) { Acme::Product.new(code: "B01", name: "Blue Widget", price: BigDecimal("7.95")) }
+
+  let(:catalog) do
+    instance_double(Acme::ProductCatalog).tap do |mock|
+      allow(mock).to receive(:find).with("R01").and_return(r01)
+      allow(mock).to receive(:find).with("G01").and_return(g01)
+      allow(mock).to receive(:find).with("B01").and_return(b01)
+      allow(mock).to receive(:find).with("XXX").and_return(nil)
+    end
   end
 
-  let(:catalog) { Acme::ProductCatalog.new(products) }
-  let(:delivery_rule) { Acme::Strategies::Delivery::Default.new }
-  let(:offers) { [Acme::Strategies::Offer::RedWidgetHalfPrice.new] }
+  let(:delivery_strategy) do
+    lambda do |total|
+      case total
+      when 0.to_d..49.99.to_d then BigDecimal("4.95")
+      when 50.to_d..89.99.to_d then BigDecimal("2.95")
+      else BigDecimal("0")
+      end
+    end
+  end
+
+  let(:offer_strategy) do
+    lambda do |items|
+      red_widgets = items.select { |item| item.code == "R01" }
+      red_widgets.sort_by!(&:price)
+
+      # Apply 50% off every second R01 in a pair using BigDecimal math with per-pair rounding
+      red_widgets.each_slice(2).sum do |pair|
+        if pair.size == 2
+          (pair[1].price * BigDecimal("0.5")).round(2)
+        else
+          BigDecimal("0")
+        end
+      end
+    end
+  end
 
   describe "#add" do
     it "adds valid product by code" do
-      expect { basket.add("R01") }.to change { basket.instance_variable_get(:@items).size }.by(1)
+      basket.add("R01")
+      basket.add("G01")
+      expect(basket.instance_variable_get(:@items)).to contain_exactly(r01, g01)
     end
 
     it "raises an error for invalid code" do
@@ -35,29 +67,15 @@ RSpec.describe Acme::Basket do
   end
 
   describe "#total" do
-    context "with various basket combinations" do
-      it "calculates correct total with red widget offer and delivery" do
-        basket.add("R01")
-        basket.add("R01")
-        expect(basket.total).to eq("$54.37") # 32.95 + 16.475 + 4.95
-      end
-
-      it "applies offer only once for 3 red widgets" do
-        basket.add("B01")
-        basket.add("B01")
-        basket.add("R01")
-        basket.add("R01")
-        basket.add("R01")
-        expect(basket.total).to eq("$98.27")
-      end
-
-      it "applies delivery rule correctly above 90" do
-        basket.add("R01")
-        basket.add("R01")
-        basket.add("R01")
-        basket.add("G01")
-        basket.add("B01")
-        expect(basket.total).to eq("$115.27")
+    {
+      %w[B01 G01] => "37.85",
+      %w[R01 R01] => "54.37",
+      %w[R01 R01 R01] => "85.32",
+      %w[R01 R01 R01 G01] => "107.32"
+    }.each do |items, expected_total|
+      it "with items #{items.join(', ')} returns total $#{expected_total}" do
+        items.each { |code| basket.add(code) }
+        expect(basket.total).to eq("$#{expected_total}")
       end
     end
   end
