@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.37
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "README";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h1 id="label-F0-9F-9B-92+Acme+Widget+Co+-E2-80-93+Basket+System">🛒 Acme Widget Co – Basket System</h1>
+
+<p>Acme Widget Co is the leading provider of made-up widgets. This repository is a proof of concept for their new sales system.</p>
+
+<h2 id="label-F0-9F-A7-BE+Project+Overview">🧾 Project Overview</h2>
+
+<p>This system implements a shopping basket with support for:</p>
+<ul><li>
+<p>Product catalog management</p>
+</li><li>
+<p>Dynamic delivery charges based on basket total</p>
+</li><li>
+<p>Promotional offers using extensible strategy pattern</p>
+</li><li>
+<p>Fully documented using <a href="https://yardoc.org/">YARD</a></p>
+</li><li>
+<p>High test coverage using RSpec and SimpleCov</p>
+</li></ul>
+<hr>
+
+<h2 id="label-E2-9A-99-EF-B8-8F+Design+Principles">⚙️ Design Principles</h2>
+
+<p>This project demonstrates:</p>
+<ul><li>
+<p>✅ <strong>Good separation and encapsulation of concerns</strong></p>
+</li><li>
+<p>✅ <strong>Small, accurate interfaces and classes</strong></p>
+</li><li>
+<p>✅ <strong>Dependency injection of delivery and offer strategies</strong></p>
+</li><li>
+<p>✅ <strong>Use of the strategy pattern for flexible rules</strong></p>
+</li><li>
+<p>✅ <strong>100% test coverage with RSpec</strong></p>
+</li><li>
+<p>✅ <strong>Clear, conventional commits</strong></p>
+</li><li>
+<p>✅ <strong>YARD-based inline documentation</strong></p>
+</li></ul>
+<hr>
+
+<h2 id="label-F0-9F-93-A6+Product+Catalog">📦 Product Catalog</h2>
+
+<table role="table">
+<thead>
+<tr>
+<th>Product</th>
+<th>Code</th>
+<th>Price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Red Widget</td>
+<td>R01</td>
+<td>$32.95</td>
+</tr>
+<tr>
+<td>Green Widget</td>
+<td>G01</td>
+<td>$24.95</td>
+</tr>
+<tr>
+<td>Blue Widget</td>
+<td>B01</td>
+<td>$7.95</td>
+</tr>
+</tbody>
+</table>
+<hr>
+
+<h2 id="label-F0-9F-9A-9A+Delivery+Charges">🚚 Delivery Charges</h2>
+<ul><li>
+<p><strong>&lt;$50</strong> → $4.95</p>
+</li><li>
+<p><strong>$50 to &lt;$90</strong> → $2.95</p>
+</li><li>
+<p><strong>$90 or more</strong> → Free delivery</p>
+</li></ul>
+<hr>
+
+<h2 id="label-F0-9F-8F-B7-EF-B8-8F+Current+Offers">🏷️ Current Offers</h2>
+<ul><li>
+<p><strong>Buy One Red Widget (R01), Get Second at Half Price</strong></p>
+</li></ul>
+<hr>
+
+<h2 id="label-F0-9F-93-82+Project+Structure">📂 Project Structure</h2>
+
+<pre class="code ruby"><code class="ruby">lib/
+├── acme/
+│   ├── basket.rb               # Basket logic
+│   ├── product.rb              # Product entity
+│   ├── product_catalog.rb      # Catalog lookup logic
+│   └── strategies/
+│       ├── delivery/
+│       │   └── default.rb      # Delivery rule strategy
+│       └── offers/
+│           └── red_widget_half_price.rb  # Offer rule strategy
+
+spec/
+└── lib/
+    └── acme/
+        ├── basket_spec.rb
+        ├── product_spec.rb
+        ├── product_catalog_spec.rb
+        ├── strategies/
+            ├── delivery/
+            │   └── default_spec.rb
+            └── offers/
+                └── red_widget_half_price_spec.rb
+</code></pre>
+<hr>
+
+<h2 id="label-F0-9F-A7-AA+How+to+Run+and+Test">🧪 How to Run and Test</h2>
+
+<h3 id="label-1.+Install+dependencies">1. Install dependencies</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_install'>install</span>
+</code></pre>
+
+<h3 id="label-2.+Run+the+test+suite">2. Run the test suite</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rspec'>rspec</span>
+</code></pre>
+
+<h3 id="label-3.+View+coverage+report">3. View coverage report</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_open'>open</span> <span class='id identifier rubyid_coverage'>coverage</span><span class='op'>/</span><span class='id identifier rubyid_index'>index</span><span class='period'>.</span><span class='id identifier rubyid_html'>html</span>
+</code></pre>
+
+<h3 id="label-4.+Generate+and+view+documentation">4. Generate and view documentation</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_yard'>yard</span> <span class='id identifier rubyid_doc'>doc</span>
+<span class='id identifier rubyid_open'>open</span> <span class='id identifier rubyid_doc'>doc</span><span class='op'>/</span><span class='id identifier rubyid_index'>index</span><span class='period'>.</span><span class='id identifier rubyid_html'>html</span>
+</code></pre>
+
+<h3 id="label-5.+Check+code+style">5. Check code style</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rubocop'>rubocop</span>
+</code></pre>
+<hr>
+
+<h2 id="label-F0-9F-93-8A+Sample+Baskets">📊 Sample Baskets</h2>
+
+<table role="table">
+<thead>
+<tr>
+<th>Basket Items</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>‘B01, G01`</td>
+<td>$37.85</td>
+</tr>
+<tr>
+<td>‘R01, R01`</td>
+<td>$54.37</td>
+</tr>
+<tr>
+<td>‘R01, G01`</td>
+<td>$60.85</td>
+</tr>
+<tr>
+<td>‘B01, B01, R01, R01, R01`</td>
+<td>$98.27</td>
+</tr>
+</tbody>
+</table>
+<hr>
+
+<h2 id="label-E2-9C-85+Assumptions">✅ Assumptions</h2>
+<ul><li>
+<p>Discounts apply before delivery calculation.</p>
+</li><li>
+<p>Offers and delivery rules follow strategy pattern and are pluggable.</p>
+</li><li>
+<p>Prices use <code>BigDecimal</code> for accuracy.</p>
+</li><li>
+<p>Product codes are case-sensitive.</p>
+</li></ul>
+<hr>
+
+<h2 id="label-F0-9F-A7-A0+Technologies">🧠 Technologies</h2>
+<ul><li>
+<p>Ruby 3.1+</p>
+</li><li>
+<p>RSpec</p>
+</li><li>
+<p>SimpleCov</p>
+</li><li>
+<p>RuboCop</p>
+</li><li>
+<p>YARD for documentation</p>
+</li></ul>
+<hr>
+
+<h2 id="label-F0-9F-93-A4+Contributions">📤 Contributions</h2>
+
+<p>Feel free to fork and submit pull requests to extend this clean architecture or add new promotional/discount rules.</p>
+<hr>
+
+<h2 id="label-F0-9F-93-84+License">📄 License</h2>
+
+<p>MIT License.</p>
+
+<h2 id="label-Made+with+-E2-9D-A4-EF-B8-8F+by+Hammad+Khan">Made with ❤️ by <a href="https://github.com/hammadxcm">Hammad Khan</a></h2>
+</div></div>
+
+      <div id="footer">
+  Generated on Fri Jul 25 07:01:59 2025 by
+  <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.37 (ruby-3.1.1).
+</div>
+
+    </div>
+  </body>
+</html>
