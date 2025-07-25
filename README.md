@@ -152,6 +152,10 @@ Feel free to fork and submit pull requests to extend this clean architecture or 
 
 ---
 
+## Test Coverage Report
+<img width="1681" height="417" alt="image" src="https://github.com/user-attachments/assets/36bd372c-5333-41ea-976f-a9e1f5b48201" />
+
+
 ## 📄 License
 
 MIT License.
