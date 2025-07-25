@@ -9,21 +9,23 @@ module Acme
       # Strategy: Buy one R01, get second R01 for half price
       class RedWidgetHalfPrice
         def call(items)
-          r01s = items.select { |item| item.code == "R01" }
+          r01s = filter_red_widgets(items)
           return 0.to_d if r01s.size < 2
 
-          # Sort to ensure deterministic pairing
-          r01s.sort_by!(&:price)
+          calculate_discount(r01s)
+        end
 
-          # Apply 50% discount to every second R01 in a pair (sum then round)
+        private
+
+        def filter_red_widgets(items)
+          items.select { |item| item.code == "R01" }.sort_by(&:price)
+        end
+
+        def calculate_discount(r01s)
           total_discount = r01s.each_slice(2).sum do |pair|
-            if pair.size == 2
-              pair[1].price * BigDecimal("0.5")
-            else
-              0.to_d
-            end
+            pair.size == 2 ? pair[1].price * BigDecimal("0.5") : 0.to_d
           end
-          
+
           total_discount.round(2)
         end
       end

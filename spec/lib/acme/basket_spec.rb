@@ -5,6 +5,7 @@ require "bigdecimal"
 require "bigdecimal/util"
 require "acme/basket"
 require "acme/product"
+require "acme/strategies/offer/red_widget_half_price"
 
 RSpec.describe Acme::Basket do
   subject(:basket) do
@@ -15,50 +16,38 @@ RSpec.describe Acme::Basket do
     )
   end
 
-  let(:r01) { Acme::Product.new(code: "R01", name: "Red Widget", price: BigDecimal("32.95")) }
-  let(:g01) { Acme::Product.new(code: "G01", name: "Green Widget", price: BigDecimal("24.95")) }
-  let(:b01) { Acme::Product.new(code: "B01", name: "Blue Widget", price: BigDecimal("7.95")) }
+  let(:products) do
+    {
+      "R01" => Acme::Product.new(code: "R01", name: "Red Widget", price: BigDecimal("32.95")),
+      "G01" => Acme::Product.new(code: "G01", name: "Green Widget", price: BigDecimal("24.95")),
+      "B01" => Acme::Product.new(code: "B01", name: "Blue Widget", price: BigDecimal("7.95"))
+    }
+  end
 
   let(:catalog) do
     instance_double(Acme::ProductCatalog).tap do |mock|
-      allow(mock).to receive(:find).with("R01").and_return(r01)
-      allow(mock).to receive(:find).with("G01").and_return(g01)
-      allow(mock).to receive(:find).with("B01").and_return(b01)
-      allow(mock).to receive(:find).with("XXX").and_return(nil)
+      allow(mock).to receive(:find) { |code| products[code] }
     end
   end
 
   let(:delivery_strategy) do
     lambda do |total|
       case total
-      when 0.to_d..49.99.to_d then BigDecimal("4.95")
-      when 50.to_d..89.99.to_d then BigDecimal("2.95")
+      when (0.to_d)..(49.99.to_d) then BigDecimal("4.95")
+      when (50.to_d)..(89.99.to_d) then BigDecimal("2.95")
       else BigDecimal("0")
       end
     end
   end
 
-  let(:offer_strategy) do
-    lambda do |items|
-      red_widgets = items.select { |item| item.code == "R01" }
-      red_widgets.sort_by!(&:price)
-
-      # Apply 50% off every second R01 in a pair using BigDecimal math with per-pair rounding
-      red_widgets.each_slice(2).sum do |pair|
-        if pair.size == 2
-          (pair[1].price * BigDecimal("0.5")).round(2)
-        else
-          BigDecimal("0")
-        end
-      end
-    end
-  end
+  let(:offer_strategy) { Acme::Strategies::Offer::RedWidgetHalfPrice.new }
 
   describe "#add" do
     it "adds valid product by code" do
       basket.add("R01")
       basket.add("G01")
-      expect(basket.instance_variable_get(:@items)).to contain_exactly(r01, g01)
+      expected_items = [products["R01"], products["G01"]]
+      expect(basket.instance_variable_get(:@items)).to match_array(expected_items)
     end
 
     it "raises an error for invalid code" do
