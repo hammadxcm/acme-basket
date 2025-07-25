@@ -6,6 +6,8 @@ require "bigdecimal/util"
 module Acme
   # Represents a customer's shopping basket with applied offers and delivery strategies
   class Basket
+    attr_reader :items
+
     # Initializes the basket with dependencies
     #
     # @param product_catalog [Acme::ProductCatalog] service to find product details
@@ -34,7 +36,7 @@ module Acme
     #
     # @return [String] formatted total price (e.g., "$32.95")
     def total
-      subtotal = @items.map(&:price).sum.to_d
+      subtotal = @items.sum(&:price).to_d
       discount = @offers.sum { |offer| offer.call(@items) }
       adjusted_total = subtotal - discount
       delivery_fee = @delivery.call(adjusted_total)
