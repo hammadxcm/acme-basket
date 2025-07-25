@@ -4,7 +4,7 @@ require_relative "lib/acme/basket"
 require_relative "lib/acme/product_catalog"
 require_relative "config/catalog"
 require_relative "lib/acme/strategies/delivery/default"
-require_relative "lib/acme/offers/red_widget_half_price"
+require_relative "lib/acme/offer/red_widget_half_price"
 
 catalog = Acme::ProductCatalog.new(CATALOG)
 delivery = Acme::Strategies::Delivery::Default.new

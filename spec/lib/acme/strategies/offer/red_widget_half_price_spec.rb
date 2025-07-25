@@ -2,10 +2,10 @@
 
 require "spec_helper"
 
-require "acme/offers/red_widget_half_price"
+require "acme/strategies/offer/red_widget_half_price"
 require "acme/product"
 
-RSpec.describe Acme::Offers::RedWidgetHalfPrice do
+RSpec.describe Acme::Strategies::Offer::RedWidgetHalfPrice do
   let(:offer) { described_class.new }
   let(:r01) { Acme::Product.new(code: "R01", name: "Red Widget", price: "32.95") }
 

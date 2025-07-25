@@ -4,11 +4,11 @@ require "bigdecimal"
 require "bigdecimal/util"
 
 module Acme
-  # Represents a customer's basket with pricing logic
+  # Represents a customer's shopping basket with offers and delivery strategies
   class Basket
-    # @param catalog [Acme::ProductCatalog]
-    # @param delivery_rule [#call]
-    # @param offers [Array<#call>]
+    # @param catalog [Acme::ProductCatalog] product lookup service
+    # @param delivery_rule [#call] delivery pricing strategy
+    # @param offers [Array<#call>] array of offer strategy objects
     def initialize(catalog:, delivery_rule:, offers: [])
       @catalog = catalog
       @delivery_rule = delivery_rule
@@ -16,9 +16,11 @@ module Acme
       @items = []
     end
 
-    # Add an item to the basket
+    # Adds a product to the basket by its code
     #
-    # @param code [String] Product code
+    # @param code [String] the product code
+    # @raise [ArgumentError] if product code is not found
+    # @return [void]
     def add(code)
       product = @catalog.find(code)
       raise ArgumentError, "Invalid product code: #{code}" unless product
@@ -26,9 +28,9 @@ module Acme
       @items << product
     end
 
-    # Calculate total including offers and delivery
+    # Computes the final total including offers and delivery fee
     #
-    # @return [String] Total price formatted to 2 decimal places
+    # @return [String] formatted total as a currency string
     def total
       subtotal = @items.map(&:price).sum.to_d
       discount = @offers.sum { |offer| offer.call(@items) }

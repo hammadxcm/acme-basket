@@ -5,6 +5,8 @@ AllCops:
   NewCops: enable
   SuggestExtensions: false
   TargetRubyVersion: 3.1
+RSpec/ExampleLength:
+  Max: 10
 Layout/LineLength:
   Max: 100
 RSpec:
