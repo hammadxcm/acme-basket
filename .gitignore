@@ -1,9 +1,15 @@
+# Bundler & Dependencies
 /Gemfile.lock
 /.bundle/
+/vendor/
+
+# Test coverage & yard docs
 /coverage/
 /yardoc/
 /.yardoc/
 /.yardtmp
+
+# Temp files & editor/IDE stuff
 *.swp
 *.swo
 *.log
@@ -11,8 +17,18 @@
 *.rbc
 *.sqlite3
 *.DS_Store
-*.rbenv-version
 *.byebug_history
-/.env
-/.rubocop-https*
+*.rbenv-version
+
+# Dotenv & secrets
+.env
+.env.*
+
+# RuboCop caches
+.rubocop-https*
+
+# Temp files
 /tmp/
+
+# RubyMine/JetBrains
+.idea/
