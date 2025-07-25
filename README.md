@@ -63,7 +63,7 @@ lib/
 │   └── strategies/
 │       ├── delivery/
 │       │   └── default.rb      # Delivery rule strategy
-│       └── offers/
+│       └── offer/
 │           └── red_widget_half_price.rb  # Offer rule strategy
 
 spec/
@@ -75,7 +75,7 @@ spec/
         ├── strategies/
             ├── delivery/
             │   └── default_spec.rb
-            └── offers/
+            └── offer/
                 └── red_widget_half_price_spec.rb
 ```
 
