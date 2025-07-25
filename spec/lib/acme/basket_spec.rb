@@ -33,9 +33,9 @@ RSpec.describe Acme::Basket do
   let(:delivery_strategy) do
     lambda do |total|
       case total
-      when (0.to_d)..(49.99.to_d) then BigDecimal("4.95")
-      when (50.to_d)..(89.99.to_d) then BigDecimal("2.95")
-      else BigDecimal("0")
+      when (0.to_d)..(BigDecimal("49.99")) then BigDecimal("4.95")
+      when (50.to_d)..(BigDecimal("89.99")) then BigDecimal("2.95")
+      else BigDecimal(0)
       end
     end
   end
@@ -47,7 +47,7 @@ RSpec.describe Acme::Basket do
       basket.add("R01")
       basket.add("G01")
       expected_items = [products["R01"], products["G01"]]
-      expect(basket.instance_variable_get(:@items)).to match_array(expected_items)
+      expect(basket.items).to match_array(expected_items)
     end
 
     it "raises an error for invalid code" do
@@ -62,7 +62,7 @@ RSpec.describe Acme::Basket do
       %w[R01 R01 R01] => "85.32",
       %w[R01 R01 R01 G01] => "107.32"
     }.each do |items, expected_total|
-      it "with items #{items.join(', ')} returns total $#{expected_total}" do
+      it "with items #{items.join(", ")} returns total $#{expected_total}" do
         items.each { |code| basket.add(code) }
         expect(basket.total).to eq("$#{expected_total}")
       end

@@ -8,11 +8,11 @@ RSpec.describe Acme::Strategies::Delivery::Default do
   subject(:rule) { described_class.new }
 
   it "applies $4.95 for totals under $50" do
-    expect(rule.call(49.to_d)).to eq(4.95.to_d)
+    expect(rule.call(49.to_d)).to eq(BigDecimal("4.95"))
   end
 
   it "applies $2.95 for totals between $50 and $89.99" do
-    expect(rule.call(75.to_d)).to eq(2.95.to_d)
+    expect(rule.call(75.to_d)).to eq(BigDecimal("2.95"))
   end
 
   it "applies free delivery for totals $90 and above" do
