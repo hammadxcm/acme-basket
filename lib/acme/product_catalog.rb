@@ -5,7 +5,7 @@ module Acme
   class ProductCatalog
     # @param products [Array<Acme::Product>] List of available products
     def initialize(products)
-      @products = products.each_with_object({}) { |product, h| h[product.code] = product }
+      @products = products.to_h { |product| [product.code, product] }
     end
 
     # Find a product by code
